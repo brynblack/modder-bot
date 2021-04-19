@@ -14,13 +14,13 @@ intents.guild_messages = True
 client = discord.Client(intents=intents)
 
 
-@client.event  # Final test
+@client.event
 async def on_invite_create(invite):
     await client.wait_until_ready()
     embed_dict = {
         'title': f'Created invite {invite.id}',
         'timestamp': str(datetime.utcnow()),
-        'color': discord.Colour.from_rgb(0, 255, 0).value,
+        'color': discord.Colour.blue().value,
         'author': {
             'name': f'{invite.inviter} ({invite.inviter.id})',
             'icon_url': str(invite.inviter.avatar_url)
@@ -38,7 +38,7 @@ async def on_invite_delete(invite):
         embed_dict = {
             'title': f'Deleted invite {invite.id}',
             'timestamp': str(datetime.utcnow()),
-            'color': discord.Colour.from_rgb(255, 0, 0).value,
+            'color': discord.Colour.blue().value,
             'author': {
                 'name': f'{event.user.name}#{event.user.discriminator} ({event.user.id})',
                 'icon_url': str(event.user.avatar_url)
@@ -57,7 +57,7 @@ async def on_member_ban(guild, user):
             'title': f'Banned {user} ({user.id})',
             'description': f'**Reason:** {event.reason if event.reason else "Unspecified"}',
             'timestamp': str(datetime.utcnow()),
-            'color': discord.Colour.from_rgb(255, 0, 0).value,
+            'color': discord.Colour.red().value,
             'footer': {
                 'text': event.id
             },
@@ -80,7 +80,7 @@ async def on_member_join(member):
     embed_dict = {
         'title': f'{member} joined the server!',
         'timestamp': str(datetime.utcnow()),
-        'color': discord.Colour.from_rgb(128, 0, 128).value,
+        'color': discord.Colour.orange().value,
         'thumbnail': {
             'url': str(member.avatar_url)
         },
@@ -100,7 +100,7 @@ async def on_member_remove(member):
                 'title': f'Kicked {member} ({member.id})',
                 'description': f'**Reason:** {event.reason if event.reason else "Unspecified"}',
                 'timestamp': str(datetime.utcnow()),
-                'color': discord.Colour.from_rgb(255, 0, 0).value,
+                'color': discord.Colour.orange().value,
                 'footer': {
                     'text': event.id
                 },
@@ -118,7 +118,7 @@ async def on_member_remove(member):
         embed_dict = {
             'title': f'{member} left the server!',
             'timestamp': str(datetime.utcnow()),
-            'color': discord.Colour.from_rgb(255, 165, 0).value,
+            'color': discord.Colour.orange().value,
             'thumbnail': {
                 'url': str(member.avatar_url)
             },
@@ -136,7 +136,7 @@ async def on_member_unban(guild, user):
             'title': f'Unbanned {user} ({user.id})',
             'description': f'**Reason:** {event.reason if event.reason else "Unspecified"}',
             'timestamp': str(datetime.utcnow()),
-            'color': discord.Colour.from_rgb(0, 255, 0).value,
+            'color': discord.Colour.red().value,
             'footer': {
                 'text': event.id
             },
@@ -161,7 +161,7 @@ async def on_message_edit(message_before, message_after):
     embed_dict = {
         'title': f'Edited Message ({message_after.id})',
         'timestamp': str(datetime.utcnow()),
-        'color': discord.Colour.from_rgb(0, 0, 255).value,
+        'color': discord.Colour.purple().value,
         'author': {
             'name': f'{message_after.author} ({message_after.author.id})',
             'icon_url': str(message_after.author.avatar_url)
