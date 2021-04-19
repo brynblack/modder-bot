@@ -15,14 +15,14 @@ client = discord.Client(intents=intents)
 @client.event
 async def on_invite_create(invite):
     await client.wait_until_ready()
-    print("This thing worked")
     embed_dict = {
-        'title': f'Invite {invite} was created by {invite.inviter}',
+        'title': f'Created invite {invite.id}',
         'timestamp': str(datetime.utcnow()),
         'color': discord.Colour.from_rgb(0, 0, 0).value,
-        'thumbnail': {
-            'url': str(invite.inviter.avatar_url)
-        },
+        'author': {
+            'name': f'{invite.inviter} ({invite.inviter.id})',
+            'icon_url': str(invite.inviter.avatar_url)
+        }
     }
     log_embed = discord.Embed.from_dict(embed_dict)
     logging_channel = client.get_channel(channel_id)
