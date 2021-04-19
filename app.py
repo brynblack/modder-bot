@@ -7,6 +7,7 @@ join_leave_channel_id = 679927580358344762
 
 intents = discord.Intents.default()
 intents.members = True
+intents.invites = True
 
 client = discord.Client(intents=intents)
 
