@@ -14,7 +14,7 @@ intents.guild_messages = True
 client = discord.Client(intents=intents)
 
 
-@client.event  # Testing if commit is verified
+@client.event  # Testing
 async def on_invite_create(invite):
     await client.wait_until_ready()
     embed_dict = {
