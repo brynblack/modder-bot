@@ -15,6 +15,7 @@ client = discord.Client(intents=intents)
 @client.event
 async def on_invite_create(invite):
     await client.wait_until_ready()
+    print("This thing worked")
     embed_dict = {
         'title': f'Invite {invite} was created by {invite.inviter}',
         'timestamp': str(datetime.utcnow()),
