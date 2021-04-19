@@ -20,7 +20,7 @@ async def on_invite_create(invite):
         'timestamp': str(datetime.utcnow()),
         'color': discord.Colour.from_rgb(0, 0, 0).value,
         'author': {
-            'name': f'{invite.inviter} ({invite.inviter.id})',
+            'name': f'{invite.inviter} ()',
             'icon_url': str(invite.inviter.avatar_url)
         }
     }
