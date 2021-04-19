@@ -6,8 +6,10 @@ channel_id = 833184929122484254
 join_leave_channel_id = 679927580358344762
 
 intents = discord.Intents.default()
-intents.members = True
+intents.bans = True
 intents.invites = True
+intents.members = True
+intents.guild_messages = True
 
 client = discord.Client(intents=intents)
 
@@ -48,22 +50,6 @@ async def on_invite_delete(invite):
 
 
 @client.event
-async def on_member_join(member):
-    await client.wait_until_ready()
-    embed_dict = {
-        'title': f'{member} joined the server!',
-        'timestamp': str(datetime.utcnow()),
-        'color': discord.Colour.from_rgb(128, 0, 128).value,
-        'thumbnail': {
-            'url': str(member.avatar_url)
-        },
-    }
-    log_embed = discord.Embed.from_dict(embed_dict)
-    logging_channel = client.get_channel(join_leave_channel_id)
-    await logging_channel.send(embed=log_embed)
-
-
-@client.event
 async def on_member_ban(guild, user):
     await client.wait_until_ready()
     async for event in guild.audit_logs(limit=1, action=discord.AuditLogAction.ban):
@@ -89,28 +75,19 @@ async def on_member_ban(guild, user):
 
 
 @client.event
-async def on_member_unban(guild, user):
+async def on_member_join(member):
     await client.wait_until_ready()
-    async for event in guild.audit_logs(limit=1, action=discord.AuditLogAction.unban):
-        embed_dict = {
-            'title': f'Unbanned {user} ({user.id})',
-            'description': f'**Reason:** {event.reason if event.reason else "Unspecified"}',
-            'timestamp': str(datetime.utcnow()),
-            'color': discord.Colour.from_rgb(0, 255, 0).value,
-            'footer': {
-                'text': event.id
-            },
-            'thumbnail': {
-                'url': str(user.avatar_url)
-            },
-            'author': {
-                'name': f'{event.user.name}#{event.user.discriminator} ({event.user.id})',
-                'icon_url': str(event.user.avatar_url)
-            }
-        }
-        log_embed = discord.Embed.from_dict(embed_dict)
-        logging_channel = client.get_channel(channel_id)
-        await logging_channel.send(embed=log_embed)
+    embed_dict = {
+        'title': f'{member} joined the server!',
+        'timestamp': str(datetime.utcnow()),
+        'color': discord.Colour.from_rgb(128, 0, 128).value,
+        'thumbnail': {
+            'url': str(member.avatar_url)
+        },
+    }
+    log_embed = discord.Embed.from_dict(embed_dict)
+    logging_channel = client.get_channel(join_leave_channel_id)
+    await logging_channel.send(embed=log_embed)
 
 
 @client.event
@@ -148,6 +125,31 @@ async def on_member_remove(member):
         }
         log_embed = discord.Embed.from_dict(embed_dict)
         logging_channel = client.get_channel(join_leave_channel_id)
+        await logging_channel.send(embed=log_embed)
+
+
+@client.event
+async def on_member_unban(guild, user):
+    await client.wait_until_ready()
+    async for event in guild.audit_logs(limit=1, action=discord.AuditLogAction.unban):
+        embed_dict = {
+            'title': f'Unbanned {user} ({user.id})',
+            'description': f'**Reason:** {event.reason if event.reason else "Unspecified"}',
+            'timestamp': str(datetime.utcnow()),
+            'color': discord.Colour.from_rgb(0, 255, 0).value,
+            'footer': {
+                'text': event.id
+            },
+            'thumbnail': {
+                'url': str(user.avatar_url)
+            },
+            'author': {
+                'name': f'{event.user.name}#{event.user.discriminator} ({event.user.id})',
+                'icon_url': str(event.user.avatar_url)
+            }
+        }
+        log_embed = discord.Embed.from_dict(embed_dict)
+        logging_channel = client.get_channel(channel_id)
         await logging_channel.send(embed=log_embed)
 
 
