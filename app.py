@@ -30,6 +30,23 @@ async def on_invite_create(invite):
 
 
 @client.event
+async def on_invite_delete(invite):
+    await client.wait_until_ready()
+    embed_dict = {
+        'title': f'Delete invite {invite.id}',
+        'timestamp': str(datetime.utcnow()),
+        'color': discord.Colour.from_rgb(0, 0, 0).value,
+        'author': {
+            'name': f'{invite.inviter} ({invite.inviter.id})',
+            'icon_url': str(invite.inviter.avatar_url)
+        }
+    }
+    log_embed = discord.Embed.from_dict(embed_dict)
+    logging_channel = client.get_channel(channel_id)
+    await logging_channel.send(embed=log_embed)
+
+
+@client.event
 async def on_member_join(member):
     await client.wait_until_ready()
     embed_dict = {
