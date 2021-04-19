@@ -18,9 +18,9 @@ async def on_invite_create(invite):
     embed_dict = {
         'title': f'Created invite {invite.id}',
         'timestamp': str(datetime.utcnow()),
-        'color': discord.Colour.from_rgb(0, 0, 0).value,
+        'color': discord.Colour.from_rgb(0, 255, 0).value,
         'author': {
-            'name': f'{invite.inviter} ()',
+            'name': f'{invite.inviter} ({invite.inviter.id})',
             'icon_url': str(invite.inviter.avatar_url)
         }
     }
@@ -32,18 +32,19 @@ async def on_invite_create(invite):
 @client.event
 async def on_invite_delete(invite):
     await client.wait_until_ready()
-    embed_dict = {
-        'title': f'Delete invite {invite.id}',
-        'timestamp': str(datetime.utcnow()),
-        'color': discord.Colour.from_rgb(0, 0, 0).value,
-        'author': {
-            'name': f'{invite.inviter} ({invite.inviter.id})',
-            'icon_url': str(invite.inviter.avatar_url)
+    async for event in invite.guild.audit_logs(limit=1, action=discord.AuditLogAction.invite_delete):
+        embed_dict = {
+            'title': f'Deleted invite {invite.id}',
+            'timestamp': str(datetime.utcnow()),
+            'color': discord.Colour.from_rgb(255, 0, 0).value,
+            'author': {
+                'name': f'{event.user.name}#{event.user.discriminator} ({event.user.id})',
+                'icon_url': str(event.user.avatar_url)
+            }
         }
-    }
-    log_embed = discord.Embed.from_dict(embed_dict)
-    logging_channel = client.get_channel(channel_id)
-    await logging_channel.send(embed=log_embed)
+        log_embed = discord.Embed.from_dict(embed_dict)
+        logging_channel = client.get_channel(channel_id)
+        await logging_channel.send(embed=log_embed)
 
 
 @client.event
