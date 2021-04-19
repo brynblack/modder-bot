@@ -15,7 +15,7 @@ client = discord.Client(intents=intents)
 
 
 @client.event
-async def on_invite_create(invite):  # Log created invites
+async def on_invite_create(invite):
     await client.wait_until_ready()
     embed_dict = {
         'title': f'Created invite {invite.id}',
