@@ -1,7 +1,6 @@
 import discord
 from datetime import datetime
 
-client_token = 'NDMwNjA3NzQ0MTg2NDQ5OTIw.WsMYtg.NCUFIgQn3NtKgFa4IQ2zIYJuH8Y'
 channel_id = 833184929122484254
 join_leave_channel_id = 679927580358344762
 
@@ -184,4 +183,4 @@ async def on_message_edit(message_before, message_after):
     await logging_channel.send(embed=log_embed)
 
 
-client.run(client_token)
+client.run('NDMwNjA3NzQ0MTg2NDQ5OTIw.WsMYtg.NCUFIgQn3NtKgFa4IQ2zIYJuH8Y')
