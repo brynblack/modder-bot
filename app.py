@@ -19,9 +19,12 @@ async def send_to_logging_channel(embed_dict):
     await logging_channel.send(embed=log_embed)
 
 
-@client.command()
-async def ban(ctx):
-    await ctx.send(content=ctx.message.content)
+# @client.command()
+# async def ban(ctx, *, message):
+#     user_id = message.split('<')[-1].split('>')[0].split('@')[-1].split('!')[-1]
+#     user = await client.fetch_user(user_id)
+#     await ctx.guild.ban(user)
+#     await ctx.message.delete()
 
 
 @client.event
