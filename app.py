@@ -2,7 +2,6 @@ import discord
 from datetime import datetime
 
 channel_id = 833184929122484254
-join_leave_channel_id = 679927580358344762
 
 intents = discord.Intents.default()
 intents.bans = True
@@ -86,7 +85,7 @@ async def on_member_join(member):
             }
         }
     log_embed = discord.Embed.from_dict(embed_dict)
-    logging_channel = client.get_channel(join_leave_channel_id)
+    logging_channel = client.get_channel(channel_id)
     await logging_channel.send(embed=log_embed)
 
 
@@ -125,7 +124,7 @@ async def on_member_remove(member):
             }
         }
         log_embed = discord.Embed.from_dict(embed_dict)
-        logging_channel = client.get_channel(join_leave_channel_id)
+        logging_channel = client.get_channel(channel_id)
         await logging_channel.send(embed=log_embed)
 
 
