@@ -1,7 +1,8 @@
 import discord
+from discord.ext import commands
 from datetime import datetime
 
-channel_id = 833184929122484254
+logging_channel_id = 833184929122484254
 
 intents = discord.Intents.default()
 intents.bans = True
@@ -9,44 +10,18 @@ intents.invites = True
 intents.members = True
 intents.guild_messages = True
 
-client = discord.Client(intents=intents)
+client = commands.Bot(command_prefix='!', intents=intents)
 
 
 async def send_to_logging_channel(embed_dict):
     log_embed = discord.Embed.from_dict(embed_dict)
-    logging_channel = client.get_channel(channel_id)
+    logging_channel = client.get_channel(logging_channel_id)
     await logging_channel.send(embed=log_embed)
 
 
-@client.event
-async def on_invite_create(invite):
-    await client.wait_until_ready()
-    embed_dict = {
-        'title': f'Created Invite {invite.id}',
-        'timestamp': str(datetime.utcnow()),
-        'color': discord.Colour.orange().value,
-        'author': {
-            'name': f'{invite.inviter} ({invite.inviter.id})',
-            'icon_url': str(invite.inviter.avatar_url)
-        }
-    }
-    await send_to_logging_channel(embed_dict)
-
-
-@client.event
-async def on_invite_delete(invite):
-    await client.wait_until_ready()
-    async for event in invite.guild.audit_logs(limit=1, action=discord.AuditLogAction.invite_delete):
-        embed_dict = {
-            'title': f'Deleted Invite {invite.id}',
-            'timestamp': str(datetime.utcnow()),
-            'color': discord.Colour.orange().value,
-            'author': {
-                'name': f'{event.user.name}#{event.user.discriminator} ({event.user.id})',
-                'icon_url': str(event.user.avatar_url)
-            }
-        }
-        await send_to_logging_channel(embed_dict)
+@client.command()
+async def ban(ctx):
+    await ctx.send(content=ctx.message.content)
 
 
 @client.event
@@ -73,21 +48,6 @@ async def on_member_ban(guild, user):
 
 
 @client.event
-async def on_member_join(member):
-    await client.wait_until_ready()
-    embed_dict = {
-            'title': f'Joined Server',
-            'timestamp': str(datetime.utcnow()),
-            'color': discord.Colour.orange().value,
-            'author': {
-                'name': f'{member} ({member.id})',
-                'icon_url': str(member.avatar_url)
-            }
-        }
-    await send_to_logging_channel(embed_dict)
-
-
-@client.event
 async def on_member_remove(member):
     await client.wait_until_ready()
     async for event in member.guild.audit_logs(limit=1, action=discord.AuditLogAction.kick):
@@ -110,16 +70,6 @@ async def on_member_remove(member):
                 }
             }
             await send_to_logging_channel(embed_dict)
-        embed_dict = {
-            'title': f'Left Server',
-            'timestamp': str(datetime.utcnow()),
-            'color': discord.Colour.orange().value,
-            'author': {
-                'name': f'{member} ({member.id})',
-                'icon_url': str(member.avatar_url)
-            }
-        }
-        await send_to_logging_channel(embed_dict)
 
 
 @client.event
@@ -143,35 +93,6 @@ async def on_member_unban(guild, user):
             }
         }
         await send_to_logging_channel(embed_dict)
-
-
-@client.event
-async def on_message_edit(message_before, message_after):
-    await client.wait_until_ready()
-    if message_after.author == client.user:
-        return
-    embed_dict = {
-        'title': f'Edited Message ({message_after.id})',
-        'timestamp': str(datetime.utcnow()),
-        'color': discord.Colour.orange().value,
-        'author': {
-            'name': f'{message_after.author} ({message_after.author.id})',
-            'icon_url': str(message_after.author.avatar_url)
-        },
-        'fields': [
-            {
-                'name': 'Before',
-                'value': message_before.content,
-                'inline': True
-            },
-            {
-                'name': 'After',
-                'value': message_after.content,
-                'inline': True
-            }
-        ]
-    }
-    await send_to_logging_channel(embed_dict)
 
 
 client.run('NDMwNjA3NzQ0MTg2NDQ5OTIw.WsMYtg.NCUFIgQn3NtKgFa4IQ2zIYJuH8Y')
