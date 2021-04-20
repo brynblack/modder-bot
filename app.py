@@ -12,6 +12,12 @@ intents.guild_messages = True
 client = discord.Client(intents=intents)
 
 
+async def send_to_logging_channel(embed_dict):
+    log_embed = discord.Embed.from_dict(embed_dict)
+    logging_channel = client.get_channel(channel_id)
+    await logging_channel.send(embed=log_embed)
+
+
 @client.event
 async def on_invite_create(invite):
     await client.wait_until_ready()
@@ -24,9 +30,7 @@ async def on_invite_create(invite):
             'icon_url': str(invite.inviter.avatar_url)
         }
     }
-    log_embed = discord.Embed.from_dict(embed_dict)
-    logging_channel = client.get_channel(channel_id)
-    await logging_channel.send(embed=log_embed)
+    await send_to_logging_channel(embed_dict)
 
 
 @client.event
@@ -42,9 +46,7 @@ async def on_invite_delete(invite):
                 'icon_url': str(event.user.avatar_url)
             }
         }
-        log_embed = discord.Embed.from_dict(embed_dict)
-        logging_channel = client.get_channel(channel_id)
-        await logging_channel.send(embed=log_embed)
+        await send_to_logging_channel(embed_dict)
 
 
 @client.event
@@ -67,9 +69,7 @@ async def on_member_ban(guild, user):
                 'icon_url': str(event.user.avatar_url)
             }
         }
-        log_embed = discord.Embed.from_dict(embed_dict)
-        logging_channel = client.get_channel(channel_id)
-        await logging_channel.send(embed=log_embed)
+        await send_to_logging_channel(embed_dict)
 
 
 @client.event
@@ -84,9 +84,7 @@ async def on_member_join(member):
                 'icon_url': str(member.avatar_url)
             }
         }
-    log_embed = discord.Embed.from_dict(embed_dict)
-    logging_channel = client.get_channel(channel_id)
-    await logging_channel.send(embed=log_embed)
+    await send_to_logging_channel(embed_dict)
 
 
 @client.event
@@ -111,9 +109,7 @@ async def on_member_remove(member):
                     'icon_url': str(event.user.avatar_url)
                 }
             }
-            log_embed = discord.Embed.from_dict(embed_dict)
-            logging_channel = client.get_channel(channel_id)
-            await logging_channel.send(embed=log_embed)
+            await send_to_logging_channel(embed_dict)
         embed_dict = {
             'title': f'Left Server',
             'timestamp': str(datetime.utcnow()),
@@ -123,9 +119,7 @@ async def on_member_remove(member):
                 'icon_url': str(member.avatar_url)
             }
         }
-        log_embed = discord.Embed.from_dict(embed_dict)
-        logging_channel = client.get_channel(channel_id)
-        await logging_channel.send(embed=log_embed)
+        await send_to_logging_channel(embed_dict)
 
 
 @client.event
@@ -148,9 +142,7 @@ async def on_member_unban(guild, user):
                 'icon_url': str(event.user.avatar_url)
             }
         }
-        log_embed = discord.Embed.from_dict(embed_dict)
-        logging_channel = client.get_channel(channel_id)
-        await logging_channel.send(embed=log_embed)
+        await send_to_logging_channel(embed_dict)
 
 
 @client.event
@@ -179,9 +171,7 @@ async def on_message_edit(message_before, message_after):
             }
         ]
     }
-    log_embed = discord.Embed.from_dict(embed_dict)
-    logging_channel = client.get_channel(channel_id)
-    await logging_channel.send(embed=log_embed)
+    await send_to_logging_channel(embed_dict)
 
 
 client.run('NDMwNjA3NzQ0MTg2NDQ5OTIw.WsMYtg.NCUFIgQn3NtKgFa4IQ2zIYJuH8Y')
