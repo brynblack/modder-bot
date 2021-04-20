@@ -17,9 +17,9 @@ client = discord.Client(intents=intents)
 async def on_invite_create(invite):
     await client.wait_until_ready()
     embed_dict = {
-        'title': f'Created invite {invite.id}',
+        'title': f'Created Invite {invite.id}',
         'timestamp': str(datetime.utcnow()),
-        'color': discord.Colour.blue().value,
+        'color': discord.Colour.orange().value,
         'author': {
             'name': f'{invite.inviter} ({invite.inviter.id})',
             'icon_url': str(invite.inviter.avatar_url)
@@ -35,9 +35,9 @@ async def on_invite_delete(invite):
     await client.wait_until_ready()
     async for event in invite.guild.audit_logs(limit=1, action=discord.AuditLogAction.invite_delete):
         embed_dict = {
-            'title': f'Deleted invite {invite.id}',
+            'title': f'Deleted Invite {invite.id}',
             'timestamp': str(datetime.utcnow()),
-            'color': discord.Colour.blue().value,
+            'color': discord.Colour.orange().value,
             'author': {
                 'name': f'{event.user.name}#{event.user.discriminator} ({event.user.id})',
                 'icon_url': str(event.user.avatar_url)
@@ -56,7 +56,7 @@ async def on_member_ban(guild, user):
             'title': f'Banned {user} ({user.id})',
             'description': f'**Reason:** {event.reason if event.reason else "Unspecified"}',
             'timestamp': str(datetime.utcnow()),
-            'color': discord.Colour.red().value,
+            'color': discord.Colour.orange().value,
             'footer': {
                 'text': event.id
             },
@@ -77,13 +77,14 @@ async def on_member_ban(guild, user):
 async def on_member_join(member):
     await client.wait_until_ready()
     embed_dict = {
-        'title': f'{member} joined the server!',
-        'timestamp': str(datetime.utcnow()),
-        'color': discord.Colour.orange().value,
-        'thumbnail': {
-            'url': str(member.avatar_url)
-        },
-    }
+            'title': f'Joined Server',
+            'timestamp': str(datetime.utcnow()),
+            'color': discord.Colour.orange().value,
+            'author': {
+                'name': f'{member} ({member.id})',
+                'icon_url': str(member.avatar_url)
+            }
+        }
     log_embed = discord.Embed.from_dict(embed_dict)
     logging_channel = client.get_channel(join_leave_channel_id)
     await logging_channel.send(embed=log_embed)
@@ -115,12 +116,13 @@ async def on_member_remove(member):
             logging_channel = client.get_channel(channel_id)
             await logging_channel.send(embed=log_embed)
         embed_dict = {
-            'title': f'{member} left the server!',
+            'title': f'Left Server',
             'timestamp': str(datetime.utcnow()),
             'color': discord.Colour.orange().value,
-            'thumbnail': {
-                'url': str(member.avatar_url)
-            },
+            'author': {
+                'name': f'{member} ({member.id})',
+                'icon_url': str(member.avatar_url)
+            }
         }
         log_embed = discord.Embed.from_dict(embed_dict)
         logging_channel = client.get_channel(join_leave_channel_id)
@@ -135,7 +137,7 @@ async def on_member_unban(guild, user):
             'title': f'Unbanned {user} ({user.id})',
             'description': f'**Reason:** {event.reason if event.reason else "Unspecified"}',
             'timestamp': str(datetime.utcnow()),
-            'color': discord.Colour.red().value,
+            'color': discord.Colour.orange().value,
             'footer': {
                 'text': event.id
             },
@@ -160,7 +162,7 @@ async def on_message_edit(message_before, message_after):
     embed_dict = {
         'title': f'Edited Message ({message_after.id})',
         'timestamp': str(datetime.utcnow()),
-        'color': discord.Colour.purple().value,
+        'color': discord.Colour.orange().value,
         'author': {
             'name': f'{message_after.author} ({message_after.author.id})',
             'icon_url': str(message_after.author.avatar_url)
