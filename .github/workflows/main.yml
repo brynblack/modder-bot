@@ -15,3 +15,5 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "modder-bot" #Must be unique in Heroku
           heroku_email: "blynblack@gmail.com"
+          buildpack: "https://github.com/heroku/heroku-buildpack-python.git"
+          procfile:  "worker: python app.py"
