@@ -1,8 +1,11 @@
 import discord
 from discord_slash import SlashCommand
+from discord_slash.utils.manage_commands import create_option
 from datetime import datetime
 
+
 logging_channel_id = 833184929122484254
+guild_ids = [679923472561995801]
 
 intents = discord.Intents.default()
 intents.bans = True
@@ -20,11 +23,24 @@ async def send_to_logging_channel(embed_dict):
     await logging_channel.send(embed=log_embed)
 
 
-@slash.slash(name='ban', description='Bans a specified member from the server')
-async def ban(ctx, member: discord.Member):
+@slash.slash(name='ban', description='Bans a specified member from the server.', guild_ids=guild_ids, options=[
+    create_option(name="member", description="The member you want to ban.", option_type=6, required=True),
+    create_option(name="reason", description="The reason for the ban.", option_type=3, required=False)])
+async def ban(ctx, member: discord.Member, reason: discord.Message = None):
     if ctx.author.guild_permissions.ban_members:
-        await member.ban()
-        await ctx.send(content=f'Successfully banned {member}')
+        await member.ban(reason=reason)
+        await ctx.send(content=f'Successfully banned **{member}** for reason: {reason if reason else "None"}')
+    else:
+        await ctx.send(content='Sorry, but you do not have sufficient permissions to perform this action.')
+
+
+@slash.slash(name='unban', description='Unbans a specified member from the server.', guild_ids=guild_ids, options=[
+    create_option(name="member", description="The member you want to unban.", option_type=6, required=True),
+    create_option(name="reason", description="The reason for the unban.", option_type=3, required=False)])
+async def ban(ctx, member: discord.Member, reason: discord.Message = None):
+    if ctx.author.guild_permissions.ban_members:
+        await member.unban(reason=reason)
+        await ctx.send(content=f'Successfully unbanned **{member}** for reason: {reason if reason else "None"}')
     else:
         await ctx.send(content='Sorry, but you do not have sufficient permissions to perform this action.')
 
