@@ -22,8 +22,11 @@ async def send_to_logging_channel(embed_dict):
 
 @slash.slash(name='ban', description='Bans a specified member from the server')
 async def ban(ctx, member: discord.Member):
-    await member.ban()
-    await ctx.send(content=f'Successfully banned {member}')
+    if ctx.author.guild_permissions.ban_members:
+        await member.ban()
+        await ctx.send(content=f'Successfully banned {member}')
+    else:
+        await ctx.send(content='Sorry, but you do not have sufficient permissions to perform this action.')
 
 
 @client.event
