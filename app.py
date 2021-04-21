@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands
+from discord_slash import SlashCommand
 from datetime import datetime
 
 logging_channel_id = 833184929122484254
@@ -10,7 +10,8 @@ intents.invites = True
 intents.members = True
 intents.guild_messages = True
 
-client = commands.Bot(command_prefix='!', intents=intents)
+client = discord.Client(intents=intents)
+slash = SlashCommand(client, sync_commands=True)
 
 
 async def send_to_logging_channel(embed_dict):
@@ -19,12 +20,10 @@ async def send_to_logging_channel(embed_dict):
     await logging_channel.send(embed=log_embed)
 
 
-# @client.command()
-# async def ban(ctx, *, message):
-#     user_id = message.split('<')[-1].split('>')[0].split('@')[-1].split('!')[-1]
-#     user = await client.fetch_user(user_id)
-#     await ctx.guild.ban(user)
-#     await ctx.message.delete()
+@slash.slash(name='ban', description='Bans a specified member from the server')
+async def ban(ctx, member: discord.Member):
+    await member.ban()
+    await ctx.send(content=f'Successfully banned {member}')
 
 
 @client.event
