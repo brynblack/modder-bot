@@ -28,8 +28,12 @@ async def send_to_logging_channel(embed_dict):
     create_option(name="reason", description="The reason for the ban.", option_type=3, required=False)])
 async def ban(ctx, member: discord.Member, reason: discord.Message = None):
     if ctx.author.guild_permissions.ban_members:
-        await member.ban(reason=reason)
-        await ctx.send(content=f'Successfully banned **{member}** for reason: {reason if reason else "None"}')
+        if type(member) == int:
+            await ctx.guild.ban(discord.Object(id=member), reason=reason)
+            await ctx.send(content=f'Successfully banned **{await client.fetch_user(int(str(member)))}** for reason: {reason if reason else "None"}')
+        else:
+            await ctx.guild.ban(discord.Object(id=member.id), reason=reason)
+            await ctx.send(content=f'Successfully banned **{member}** for reason: {reason if reason else "None"}')
     else:
         await ctx.send(content='Sorry, but you do not have sufficient permissions to perform this action.')
 
@@ -37,10 +41,14 @@ async def ban(ctx, member: discord.Member, reason: discord.Message = None):
 @slash.slash(name='unban', description='Unbans a specified member from the server.', guild_ids=guild_ids, options=[
     create_option(name="member", description="The member you want to unban.", option_type=6, required=True),
     create_option(name="reason", description="The reason for the unban.", option_type=3, required=False)])
-async def ban(ctx, member: discord.Member, reason: discord.Message = None):
+async def unban(ctx, member: discord.Member, reason: discord.Message = None):
     if ctx.author.guild_permissions.ban_members:
-        await member.unban(reason=reason)
-        await ctx.send(content=f'Successfully unbanned **{member}** for reason: {reason if reason else "None"}')
+        if type(member) == int:
+            await ctx.guild.unban(discord.Object(id=member), reason=reason)
+            await ctx.send(content=f'Successfully unbanned **{await client.fetch_user(int(str(member)))}** for reason: {reason if reason else "None"}')
+        else:
+            await ctx.guild.unban(discord.Object(id=member.id), reason=reason)
+            await ctx.send(content=f'Successfully unbanned **{member}** for reason: {reason if reason else "None"}')
     else:
         await ctx.send(content='Sorry, but you do not have sufficient permissions to perform this action.')
 
