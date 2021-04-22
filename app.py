@@ -34,7 +34,7 @@ async def ban(ctx, member: discord.Member, reason: discord.Message = None):
             await ctx.message.delete(delay=5)
         else:
             await ctx.guild.ban(discord.Object(id=member.id), reason=reason)
-            await ctx.send(content=f'Successfully banned **{member}** for reason: {reason if reason else "None"}')
+            await ctx.send(content=f'Successfully banned **{member}** for reason: {reason if reason else "Unspecified"}')
             await ctx.message.delete(delay=5)
     else:
         await ctx.send(content='Sorry, but you do not have sufficient permissions to perform this action.')
@@ -51,7 +51,7 @@ async def unban(ctx, member: discord.Member, reason: discord.Message = None):
             await ctx.message.delete(delay=5)
         else:
             await ctx.guild.unban(discord.Object(id=member.id), reason=reason)
-            await ctx.send(content=f'Successfully unbanned **{member}** for reason: {reason if reason else "None"}')
+            await ctx.send(content=f'Successfully unbanned **{member}** for reason: {reason if reason else "Unspecified"}')
             await ctx.message.delete(delay=5)
     else:
         await ctx.send(content='Sorry, but you do not have sufficient permissions to perform this action.')
