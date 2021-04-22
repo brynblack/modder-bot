@@ -16,4 +16,5 @@ jobs:
           heroku_app_name: "modder-bot"
           heroku_email: "blynblack@gmail.com"
           buildpack: "https://github.com/heroku/heroku-buildpack-python.git"
+          branch: "main"
           procfile:  "worker: python app.py"
