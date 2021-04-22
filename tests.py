@@ -11,10 +11,15 @@ intents.guild_messages = True
 client = discord.Client(intents=intents)
 
 
+async def test_variables():
+    try:
+        await client.fetch_channel(logging_channel_id)
+    except:
+        raise AssertionError
+
+
 @client.event
 async def on_ready():
-    async def test_variables():
-        print(await client.fetch_channel(logging_channel_id))
     await test_variables()
 
 
