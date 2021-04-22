@@ -16,6 +16,8 @@ async def test_variables():
         await client.fetch_channel(logging_channel_id)
     except:
         raise AssertionError
+    else:
+        await client.close()
 
 
 @client.event
