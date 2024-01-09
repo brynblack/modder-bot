@@ -1,1 +1,3 @@
 venv/** linguist-vendored
+venv/Lib** linguist-vendored
+venv/Scripts** linguist-vendored
