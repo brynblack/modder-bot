@@ -1,6 +1,5 @@
 # modder-bot
-A discord.py bot that I am working on currently.
+A discord.py moderation bot.
 
-The intended use of this bot is for moderation, and administrator related actions.
-
-At the moment, this bot features ban, unban, and kick logging in an easy-to-read embed format, and also is getting moderation commands in the near future, such as ban, kick, etc.
+## License
+The source code for this project is licensed under the MIT license. You may find the conditions of the license [here](LICENSE).
